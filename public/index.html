@@ -14,10 +14,18 @@
 
 <script>
 
+const BASE_URL = "https://bappa-tracking-server.onrender.com/api";
+
+// ADD USER
 async function addUser() {
   const name = document.getElementById("name").value;
 
-  await fetch("http://localhost:3000/users", {
+  if (!name) {
+    alert("Enter name first");
+    return;
+  }
+
+  await fetch(`${BASE_URL}/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -25,11 +33,13 @@ async function addUser() {
     body: JSON.stringify({ name })
   });
 
+  document.getElementById("name").value = "";
   loadUsers();
 }
 
+// LOAD USERS
 async function loadUsers() {
-  const res = await fetch("http://localhost:3000/users");
+  const res = await fetch(`${BASE_URL}/users`);
   const data = await res.json();
 
   const list = document.getElementById("list");
@@ -39,21 +49,22 @@ async function loadUsers() {
     list.innerHTML += `
       <li>
         ${user.name}
-        <button onclick="deleteUser(${user.id})">Delete</button>
+        <button onclick="deleteUser('${user._id}')">Delete</button>
       </li>
     `;
   });
 }
 
+// DELETE USER
 async function deleteUser(id) {
-  await fetch(`http://localhost:3000/users/${id}`, {
+  await fetch(`${BASE_URL}/users/${id}`, {
     method: "DELETE"
   });
 
   loadUsers();
 }
 
-// page load হলে data আনবে
+// AUTO LOAD
 loadUsers();
 
 </script>

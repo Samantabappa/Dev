@@ -1,19 +1,24 @@
 const express = require("express");
 const cors = require("cors");
+
 const app = express();
 
-// middlewares
+// middleware
 app.use(cors());
 app.use(express.json());
 
-// database connect
+// DB connect
 require("./config/db");
 
 // routes
 const userRoutes = require("./routes/userRoutes");
-app.use("/users", userRoutes);
+
+// 🔥 FIX: /api use করো
+app.use("/api/users", userRoutes);
 
 // server start
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
 });
