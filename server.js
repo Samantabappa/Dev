@@ -7,14 +7,22 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 🔥 static frontend serve (optional but useful)
+app.use(express.static("public"));
+
 // DB connect
 require("./config/db");
 
 // routes
 const userRoutes = require("./routes/userRoutes");
 
-// 🔥 FIX: /api use করো
+// 🔥 API route
 app.use("/api/users", userRoutes);
+
+// 🔥 root route (fix "Cannot GET /")
+app.get("/", (req, res) => {
+  res.send("🚀 Server is running");
+});
 
 // server start
 const PORT = process.env.PORT || 3000;
